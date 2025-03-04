@@ -1,11 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsOptional, IsString, IsNumber } from 'class-validator';
+import { IsEmail, IsOptional, IsString, IsNumber, IsUUID } from 'class-validator';
 import { UUID } from 'crypto';
 
 export class CreateUserDto {
-    @ApiProperty()
-    @IsNumber()
-    id: UUID;
 
     
     @ApiProperty()
@@ -28,10 +25,7 @@ export class CreateUserDto {
 }
 
 export class UpdateUserDto {
-    @ApiProperty()
-    @IsOptional()
-    @IsNumber()
-    id?: UUID;
+   
 
     @ApiProperty()
     @IsOptional()

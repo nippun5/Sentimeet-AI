@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto, UpdateUserDto } from './dto/create-user.dto';
+import { UUID } from 'node:crypto';
+
 
 
 
@@ -21,13 +23,13 @@ export class UsersService {
     return this.prisma.user.findMany();
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     return this.prisma.user.findUnique({
       where: { id },
     });
   }
 
-  async update(id: number, data: UpdateUserDto) {
+  async update(id: string, data: UpdateUserDto) {
     return this.prisma.user.update({
       where: { id },
       data:{email: data.email,
@@ -37,9 +39,9 @@ export class UsersService {
     });
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     return this.prisma.user.delete({
-      where: { id },
+      where: { id:id },
     });
   }
 
