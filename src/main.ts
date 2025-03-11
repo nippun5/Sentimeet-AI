@@ -5,12 +5,19 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
- 
   const config = new DocumentBuilder()
     .setTitle('My API')
     .setDescription('API documentation for my new project')
     .setVersion('1.0')
-    .addBearerAuth()
+    .addBearerAuth(
+      { 
+        type: 'http', 
+        scheme: 'bearer', 
+        bearerFormat: 'JWT', 
+        description: 'Enter JWT token' 
+      }, 
+      'Authorization'
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
@@ -18,7 +25,6 @@ async function bootstrap() {
 
   const port = 3000;
   await app.listen(port);
-
 
   console.log(`Swagger is running at: http://localhost:${port}/api`);
 }
