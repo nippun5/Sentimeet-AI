@@ -43,6 +43,6 @@ export class JwtAuthGuard implements CanActivate {
     // Method to verify JWT token
     private verifyToken(token: string) {
         const secret = this.configService.get<string>('JWT_SECRET');
-        return jwt.verify(token, secret); // Verifies the token using the secret
+        return jwt.verify(token, "sasasaa"); // Verifies the token using the secret
     }
 }
