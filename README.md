@@ -29,8 +29,18 @@
 
 ```bash
 $ pnpm install
-```
 
+```
+## docker
+
+```bash
+$ docker-compose up --build
+
+```
+## migration
+```
+$ npx prisma migrate
+```
 ## Compile and run the project
 
 ```bash
@@ -43,6 +53,7 @@ $ pnpm run start:dev
 # production mode
 $ pnpm run start:prod
 ```
+
 
 ## Run tests
 
