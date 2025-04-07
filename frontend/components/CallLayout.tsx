@@ -12,8 +12,8 @@ import {
 } from '@stream-io/video-react-sdk';
 import '@stream-io/video-react-sdk/dist/css/styles.css';
 import { useCallback, useState } from 'react';
-import robotImage from '../assets/robot.png';
-import llamaImage from '../assets/llama.png';
+import robotImage from '../assets/recorder.png';
+import llamaImage from '../assets/assistant.png';
 import { RealtimeTranscriber } from 'assemblyai';
 
 export default function CallLayout(): JSX.Element {
