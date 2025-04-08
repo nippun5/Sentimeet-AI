@@ -5,6 +5,12 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // ✅ Enable CORS so frontend can talk to the backend
+  app.enableCors({
+    origin: 'http://localhost:3000', // your Next.js frontend origin
+    credentials: true,
+  });
+
   const config = new DocumentBuilder()
     .setTitle('My API')
     .setDescription('API documentation for my new project')

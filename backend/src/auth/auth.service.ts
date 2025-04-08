@@ -17,6 +17,9 @@ export type TokenType = {
   access_token: string;
   refresh_token: string;
 };
+import * as jwt from 'jsonwebtoken';
+
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -61,26 +64,56 @@ export class AuthService {
   }
 
   // -----------------login user -----------------------------
-  async login(dto: CreateUserDto): Promise<TokenType> {
+  // async login(dto: CreateUserDto): Promise<TokenType> {
+  //   const { email, password } = dto;
+  //   const user = await this.prisma.user.findUnique({
+  //     where: {
+  //       email: email,
+  //     },
+  //   });
+
+  //   if (!user) throw new NotFoundException('User is not registered');
+
+  //   const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+  //   if (!isPasswordMatch)
+  //     throw new ForbiddenException('Password does not match');
+
+  //   const tokens = await this.generateToken(user.id, user.email, user.firstname||'');
+  //   await this.storeHashedRT(user.id, tokens.refresh_token);
+
+  //   return { firstname: user.firstname||"", ...tokens };
+  // }
+
+  async login(dto: CreateUserDto): Promise<TokenType & { stream_token: string }> {
     const { email, password } = dto;
+  
     const user = await this.prisma.user.findUnique({
-      where: {
-        email: email,
-      },
+      where: { email },
     });
-
+  
     if (!user) throw new NotFoundException('User is not registered');
-
+  
     const isPasswordMatch = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordMatch)
-      throw new ForbiddenException('Password does not match');
-
-    const tokens = await this.generateToken(user.id, user.email, user.firstname||'');
+    if (!isPasswordMatch) throw new ForbiddenException('Password does not match');
+  
+    const tokens = await this.generateToken(user.id, user.email, user.firstname || '');
     await this.storeHashedRT(user.id, tokens.refresh_token);
-
-    return { firstname: user.firstname||"", ...tokens };
+  
+    // ✅ Generate Stream Video user token manually
+    const stream_token = jwt.sign(
+      { user_id: user.id }, // must include user_id
+      process.env.STREAM_SECRET!,
+      { algorithm: 'HS256', expiresIn: '1h' }
+    );
+  
+    return {
+      firstname: user.firstname || '',
+      ...tokens,
+      stream_token,
+    };
   }
+  
 
   //------------------logout---------------------------------
   async logout(userId: string): Promise<void> {

@@ -22,10 +22,10 @@ export const useVideoClient = ({
     const streamVideoClient = new StreamVideoClient({ apiKey });
     // prevents application from setting stale client (user changed, for example)
     let didUserConnectInterrupt = false;
-
     const videoConnectionPromise = streamVideoClient
       .connectUser(user, tokenOrProvider)
       .then(() => {
+       
         if (!didUserConnectInterrupt) {
           setVideoClient(streamVideoClient);
         }
