@@ -13,7 +13,7 @@ import {
 import '@stream-io/video-react-sdk/dist/css/styles.css';
 import { useCallback, useState } from 'react';
 import robotImage from '../assets/recorder.png';
-import llamaImage from '../assets/assistant.png';
+import assistant from '../assets/assistant.png';
 import { RealtimeTranscriber } from 'assemblyai';
 
 export default function CallLayout(): JSX.Element {
@@ -116,7 +116,7 @@ export default function CallLayout(): JSX.Element {
           }`}
         >
           <Image
-            src={llamaImage}
+            src={assistant}
             width={200}
             height={200}
             alt='llama'
