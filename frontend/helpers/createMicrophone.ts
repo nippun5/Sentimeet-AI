@@ -13,7 +13,7 @@ export function createMicrophone(stream: MediaStream) {
   return {
     async startRecording(onAudioCallback: any) {
       audioContext = new AudioContext({
-        sampleRate: 16_000,
+        sampleRate: 20_000,
         latencyHint: 'balanced',
       });
       source = audioContext.createMediaStreamSource(stream);
