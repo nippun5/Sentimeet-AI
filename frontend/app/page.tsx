@@ -1,248 +1,357 @@
-'use client';
+// 'use client';
 
-import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';  // Make sure you have 'uuid' package installed
-import { jwtDecode } from 'jwt-decode';
-import { User } from '@stream-io/video-client';
-import CallContainer from '@/components/CallContainer';
-import ErrorScreen from '@/components/ErrorScreen';
+// import { useState } from 'react';
+// import { v4 as uuidv4 } from 'uuid';  // Make sure you have 'uuid' package installed
+// import { jwtDecode } from 'jwt-decode';
+// import { User } from '@stream-io/video-client';
+// import CallContainer from '@/components/CallContainer';
+// import ErrorScreen from '@/components/ErrorScreen';
 
-type HomeState = {
-  apiKey: string;
-  user: User;
-  token: string;
-  meetingId: string;
-  meetingTitle: string;
-};
+// type HomeState = {
+//   apiKey: string;
+//   user: User;
+//   token: string;
+//   meetingId: string;
+//   meetingTitle: string;
+// };
 
-type DecodedToken = {
-  sub: string;
-  firstname: string;
-  lastname: string;
-};
+// type DecodedToken = {
+//   sub: string;
+//   firstname: string;
+//   lastname: string;
+// };
 
-export default function Home() {
-  const [step, setStep] = useState<'register' | 'login' | 'meeting'>('register');
-  const [homeState, setHomeState] = useState<HomeState | undefined>();
-  const [error, setError] = useState<string | undefined>();
-  const [loading, setLoading] = useState(false);
+// export default function Home() {
+//   const [step, setStep] = useState<'register' | 'login' | 'meeting'>('register');
+//   const [homeState, setHomeState] = useState<HomeState | undefined>();
+//   const [error, setError] = useState<string | undefined>();
+//   const [loading, setLoading] = useState(false);
 
-  const [email, setEmail] = useState('');
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
-  const [password, setPassword] = useState('');
-  const [meetingId, setMeetingId] = useState('');
-  const [meetingTitle, setMeetingTitle] = useState('');
+//   const [email, setEmail] = useState('');
+//   const [firstname, setFirstname] = useState('');
+//   const [lastname, setLastname] = useState('');
+//   const [password, setPassword] = useState('');
+//   const [meetingId, setMeetingId] = useState('');
+//   const [meetingTitle, setMeetingTitle] = useState('');
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const res = await fetch('http://localhost:8000/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, firstname, lastname, password }),
-      });
+//   const handleRegister = async (e: React.FormEvent) => {
+//     e.preventDefault();
+//     setLoading(true);
+//     try {
+//       const res = await fetch('http://localhost:8000/auth/signup', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ email, firstname, lastname, password }),
+//       });
 
-      if (!res.ok) throw new Error('Registration failed');
-      setStep('login');
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+//       if (!res.ok) throw new Error('Registration failed');
+//       setStep('login');
+//     } catch (err: any) {
+//       setError(err.message);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const res = await fetch('http://localhost:8000/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+//   const handleLogin = async (e: React.FormEvent) => {
+//     e.preventDefault();
+//     setLoading(true);
+//     try {
+//       const res = await fetch('http://localhost:8000/auth/login', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ email, password }),
+//       });
 
-      const data = await res.json();
-      const decoded = jwtDecode<DecodedToken>(data.access_token);
+//       const data = await res.json();
+//       const decoded = jwtDecode<DecodedToken>(data.access_token);
 
-      const user: User = {
-        id: decoded.sub, 
-        name: `${decoded.firstname} ${decoded.lastname}`,
-        image: `https://getstream.io/random_png/?id=${decoded.sub}&name=${decoded.firstname}`,
-      };
+//       const user: User = {
+//         id: decoded.sub, 
+//         name: `${decoded.firstname} ${decoded.lastname}`,
+//         image: `https://getstream.io/random_png/?id=${decoded.sub}&name=${decoded.firstname}`,
+//       };
 
-      const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY!;
-      if (!apiKey) throw new Error('Missing API key');
+//       const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY!;
+//       if (!apiKey) throw new Error('Missing API key');
 
-      setHomeState({
-        apiKey,
-        user,
-        token: data.stream_token,
-        meetingId,
-        meetingTitle,
-      });
-      const meetingData = {
-        title: meetingTitle,
-        description: 'Meeting description goes here', // Optional, modify as needed
-        participants: [
-          { userId: decoded.sub }, // Use the user ID from the token
-        ],
-      };
+//       setHomeState({
+//         apiKey,
+//         user,
+//         token: data.stream_token,
+//         meetingId,
+//         meetingTitle,
+//       });
+//       const meetingData = {
+//         title: meetingTitle,
+//         description: 'Meeting description goes here', // Optional, modify as needed
+//         participants: [
+//           { userId: decoded.sub }, // Use the user ID from the token
+//         ],
+//       };
 
-      // Send the API request to create the meeting
-      const meetingres = await fetch('http://localhost:8000/meetings', {
-        method: 'POST',
-        headers: {
-          'accept': '*/*',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(meetingData),
-      });
+//       // Send the API request to create the meeting
+//       const meetingres = await fetch('http://localhost:8000/meetings', {
+//         method: 'POST',
+//         headers: {
+//           'accept': '*/*',
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(meetingData),
+//       });
 
-      if (!res.ok) {
-        throw new Error(`Failed to create meeting: ${res.statusText}`);
-      }
+//       if (!res.ok) {
+//         throw new Error(`Failed to create meeting: ${res.statusText}`);
+//       }
 
-      // If successful, show a success message or redirect
-      const meetingdata = await meetingres.json();
-      alert('Meeting created successfully!');
-      console.log('Created meeting:', meetingdata); // Optionally log the response
+//       // If successful, show a success message or redirect
+//       const meetingdata = await meetingres.json();
+//       alert('Meeting created successfully!');
+//       console.log('Created meeting:', meetingdata); // Optionally log the response
     
 
-      setStep('meeting');
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+//       setStep('meeting');
+//     } catch (err: any) {
+//       setError(err.message);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   // Function to generate and set a new meeting ID
+//   const generateMeetingId = () => {
+//     const newMeetingId = uuidv4(); // Generate a new UUID for the meeting ID
+//     setMeetingId(newMeetingId); // Set it to the meetingId state
+//   };
+
+//   // Function to create a meeting
+//   const createMeeting = async () => {
+//     if (!meetingTitle || !meetingId) {
+//       setError('Please provide both meeting title and ID.');
+//       return;
+//     }
+
+//     setLoading(true);
+//     try {
+//       // Prepare the payload for creating the meeting
+//       const meetingData = {
+//         title: meetingTitle,
+//         description: 'Meeting description goes here', // Optional, modify as needed
+//         participants: [
+//           { userId: homeState?.user.id }, // Use the user ID from the token
+//         ],
+//       };
+
+//       // Send the API request to create the meeting
+//       const res = await fetch('http://localhost:8000/meetings', {
+//         method: 'POST',
+//         headers: {
+//           'accept': '*/*',
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(meetingData),
+//       });
+
+//       if (!res.ok) {
+//         throw new Error(`Failed to create meeting: ${res.statusText}`);
+//       }
+
+//       // If successful, show a success message or redirect
+//       const data = await res.json();
+//       alert('Meeting created successfully!');
+//       console.log('Created meeting:', data); // Optionally log the response
+//       setStep('meeting'); // You can change this based on your flow
+//     } catch (err: any) {
+//       setError(err.message);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   if (error) return <ErrorScreen error={error} />;
+//   if (homeState) return <CallContainer {...homeState} />;
+
+//   return (
+//     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+//       <div className="w-full sm:max-w-md bg-white p-6 rounded-xl shadow-md space-y-6">
+//         <div className="text-center">
+//           <h2 className="font-bold text-3xl">
+//             Sentimeet <span className="bg-[#f84525] text-white px-2 rounded-md">Meet</span>
+//           </h2>
+//           <p className="text-gray-500 text-sm">
+//             {step === 'register' ? 'Register a new account' : step === 'login' ? 'Login to your account' : 'Create or Join a Meeting'}
+//           </p>
+//         </div>
+
+//         {step === 'register' && (
+//           <form onSubmit={handleRegister} className="space-y-4">
+//             <input type="email" required placeholder="Email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
+//             <input type="text" required placeholder="First Name" className="input" value={firstname} onChange={(e) => setFirstname(e.target.value)} />
+//             <input type="text" required placeholder="Last Name" className="input" value={lastname} onChange={(e) => setLastname(e.target.value)} />
+//             <input type="password" required placeholder="Password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} />
+//             <button disabled={loading} className="btn-red w-full">{loading ? 'Registering...' : 'Register'}</button>
+//             <p className="text-sm text-center">
+//               Already have an account?{' '}
+//               <button type="button" onClick={() => setStep('login')} className="text-[#f84525] font-semibold">Login</button>
+//             </p>
+//           </form>
+//         )}
+
+//         {step === 'login' && (
+//           <form onSubmit={handleLogin} className="space-y-4">
+//             <input type="email" required placeholder="Email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
+//             <input type="password" required placeholder="Password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} />
+            
+//             {/* Add the Meeting ID and Title fields */}
+//             <input 
+//               type="text" 
+//               required 
+//               placeholder="Meeting Title" 
+//               className="input" 
+//               value={meetingTitle} 
+//               onChange={(e) => setMeetingTitle(e.target.value)} 
+//             />
+//             <input 
+//               type="text" 
+//               required 
+//               placeholder="Meeting ID" 
+//               className="input" 
+//               value={meetingId} 
+//               onChange={(e) => setMeetingId(e.target.value)} 
+//             />
+            
+//             {/* Button to generate a new Meeting ID */}
+//             <button 
+//               type="button" 
+//               onClick={generateMeetingId} 
+//               className="w-full bg-blue-500 text-white py-2.5 rounded-md hover:bg-blue-700 transition font-semibold"
+//             >
+//               Generate Meeting ID
+//             </button>
+
+//             <button 
+//               disabled={loading} 
+//               className="btn-green w-full"
+//               onClick={handleLogin} // Trigger meeting creation on button click
+//             >
+//               {loading ? 'Creating Meeting...' : 'Join Meeting'}
+//             </button>
+//             <p className="text-sm text-center">
+//               New user?{' '}
+//               <button type="button" onClick={() => setStep('register')} className="text-[#f84525] font-semibold">Register</button>
+//             </p>
+//           </form>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
+'use client';
+import { useEffect, useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import { createMicrophone } from './createMicrophone';
+
+type PageState = 'login' | 'register' | 'create' | 'call';
+
+export default function HomePage() {
+  const [page, setPage] = useState<PageState>('login');
+  const [token, setToken] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [meetingId, setMeetingId] = useState<string | null>(null);
+  const [meetingTitle, setMeetingTitle] = useState<string>('');
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [titleInput, setTitleInput] = useState('');
+
+  const handleRegister = async () => {
+    await fetch('http://localhost:8000/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    setPage('login');
   };
 
-  // Function to generate and set a new meeting ID
-  const generateMeetingId = () => {
-    const newMeetingId = uuidv4(); // Generate a new UUID for the meeting ID
-    setMeetingId(newMeetingId); // Set it to the meetingId state
+  const handleLogin = async () => {
+    const res = await fetch('http://localhost:8000/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    setAccessToken(data.access_token);
+    setPage('create');
   };
 
-  // Function to create a meeting
-  const createMeeting = async () => {
-    if (!meetingTitle || !meetingId) {
-      setError('Please provide both meeting title and ID.');
-      return;
-    }
+  const handleCreateMeeting = async () => {
+    if (!accessToken) return;
+    const decoded: any = jwtDecode(accessToken);
+    const res = await fetch('http://localhost:8000/meetings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        title: titleInput,
+        userId: decoded.sub,
+      }),
+    });
+    const data = await res.json();
+    setMeetingId(data.id);
+    setMeetingTitle(data.title);
+    setPage('call');
+  };
 
-    setLoading(true);
-    try {
-      // Prepare the payload for creating the meeting
-      const meetingData = {
-        title: meetingTitle,
-        description: 'Meeting description goes here', // Optional, modify as needed
-        participants: [
-          { userId: homeState?.user.id }, // Use the user ID from the token
-        ],
+  useEffect(() => {
+    if (page === 'call' && meetingId && accessToken) {
+      const startMic = async () => {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        createMicrophone(stream, meetingId, accessToken);
       };
-
-      // Send the API request to create the meeting
-      const res = await fetch('http://localhost:8000/meetings', {
-        method: 'POST',
-        headers: {
-          'accept': '*/*',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(meetingData),
-      });
-
-      if (!res.ok) {
-        throw new Error(`Failed to create meeting: ${res.statusText}`);
-      }
-
-      // If successful, show a success message or redirect
-      const data = await res.json();
-      alert('Meeting created successfully!');
-      console.log('Created meeting:', data); // Optionally log the response
-      setStep('meeting'); // You can change this based on your flow
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+      startMic();
     }
-  };
+  }, [page, meetingId, accessToken]);
 
-  if (error) return <ErrorScreen error={error} />;
-  if (homeState) return <CallContainer {...homeState} />;
-
+  // UI
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
-      <div className="w-full sm:max-w-md bg-white p-6 rounded-xl shadow-md space-y-6">
+    <main className="flex flex-col items-center justify-center p-6 space-y-4">
+      {page === 'login' && (
+        <>
+          <h1 className="text-2xl font-bold">Login</h1>
+          <input className="border p-2" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+          <input className="border p-2" placeholder="Password" type="password" onChange={(e) => setPassword(e.target.value)} />
+          <button className="bg-blue-500 text-white px-4 py-2" onClick={handleLogin}>Login</button>
+          <button className="underline" onClick={() => setPage('register')}>Create an account</button>
+        </>
+      )}
+
+      {page === 'register' && (
+        <>
+          <h1 className="text-2xl font-bold">Register</h1>
+          <input className="border p-2" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+          <input className="border p-2" placeholder="Password" type="password" onChange={(e) => setPassword(e.target.value)} />
+          <button className="bg-green-500 text-white px-4 py-2" onClick={handleRegister}>Register</button>
+          <button className="underline" onClick={() => setPage('login')}>Back to login</button>
+        </>
+      )}
+
+      {page === 'create' && (
+        <>
+          <h1 className="text-2xl font-bold">Create Meeting</h1>
+          <input className="border p-2" placeholder="Meeting Title" onChange={(e) => setTitleInput(e.target.value)} />
+          <button className="bg-purple-500 text-white px-4 py-2" onClick={handleCreateMeeting}>Create & Join</button>
+        </>
+      )}
+
+      {page === 'call' && (
         <div className="text-center">
-          <h2 className="font-bold text-3xl">
-            Sentimeet <span className="bg-[#f84525] text-white px-2 rounded-md">Meet</span>
-          </h2>
-          <p className="text-gray-500 text-sm">
-            {step === 'register' ? 'Register a new account' : step === 'login' ? 'Login to your account' : 'Create or Join a Meeting'}
-          </p>
+          <h1 className="text-2xl font-bold mb-2">In Call: {meetingTitle}</h1>
+          <p className="text-gray-600">Meeting ID: {meetingId}</p>
+          <p className="mt-2 text-sm italic text-gray-500">Recording & Transcribing...</p>
         </div>
-
-        {step === 'register' && (
-          <form onSubmit={handleRegister} className="space-y-4">
-            <input type="email" required placeholder="Email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <input type="text" required placeholder="First Name" className="input" value={firstname} onChange={(e) => setFirstname(e.target.value)} />
-            <input type="text" required placeholder="Last Name" className="input" value={lastname} onChange={(e) => setLastname(e.target.value)} />
-            <input type="password" required placeholder="Password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <button disabled={loading} className="btn-red w-full">{loading ? 'Registering...' : 'Register'}</button>
-            <p className="text-sm text-center">
-              Already have an account?{' '}
-              <button type="button" onClick={() => setStep('login')} className="text-[#f84525] font-semibold">Login</button>
-            </p>
-          </form>
-        )}
-
-        {step === 'login' && (
-          <form onSubmit={handleLogin} className="space-y-4">
-            <input type="email" required placeholder="Email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <input type="password" required placeholder="Password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} />
-            
-            {/* Add the Meeting ID and Title fields */}
-            <input 
-              type="text" 
-              required 
-              placeholder="Meeting Title" 
-              className="input" 
-              value={meetingTitle} 
-              onChange={(e) => setMeetingTitle(e.target.value)} 
-            />
-            <input 
-              type="text" 
-              required 
-              placeholder="Meeting ID" 
-              className="input" 
-              value={meetingId} 
-              onChange={(e) => setMeetingId(e.target.value)} 
-            />
-            
-            {/* Button to generate a new Meeting ID */}
-            <button 
-              type="button" 
-              onClick={generateMeetingId} 
-              className="w-full bg-blue-500 text-white py-2.5 rounded-md hover:bg-blue-700 transition font-semibold"
-            >
-              Generate Meeting ID
-            </button>
-
-            <button 
-              disabled={loading} 
-              className="btn-green w-full"
-              onClick={handleLogin} // Trigger meeting creation on button click
-            >
-              {loading ? 'Creating Meeting...' : 'Join Meeting'}
-            </button>
-            <p className="text-sm text-center">
-              New user?{' '}
-              <button type="button" onClick={() => setStep('register')} className="text-[#f84525] font-semibold">Register</button>
-            </p>
-          </form>
-        )}
-      </div>
-    </div>
+      )}
+    </main>
   );
 }
