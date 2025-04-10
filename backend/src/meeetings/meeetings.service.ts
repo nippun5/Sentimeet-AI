@@ -51,30 +51,13 @@ export class MeetingsService {
   
 
   async updateMeeting(id: string, updateMeetingDto: UpdateMeetingDto) {
-    const { title, description, participants } = updateMeetingDto;
-
+if (updateMeetingDto?.transcription === undefined) {
+      throw new Error('Transcription is required');
+    }
     const updatedMeeting = await this.prisma.meeting.update({
       where: { id },
       data: {
-        title,
-        description,
-        participants: participants
-          ? {
-              deleteMany: {}, // remove all existing participants
-              create: participants.map((userId) => ({
-                user: {
-                  connect: { id: userId },
-                },
-              })),
-            }
-          : undefined,
-      },
-      include: {
-        participants: {
-          include: {
-            user: true,
-          },
-        },
+        transcription: updateMeetingDto.transcription,
       },
     });
 
