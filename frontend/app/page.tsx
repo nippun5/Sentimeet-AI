@@ -1,12 +1,12 @@
 'use client';
-
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';  // Make sure you have 'uuid' package installed
 import { jwtDecode } from 'jwt-decode';
 import { User } from '@stream-io/video-client';
 import CallContainer from '@/components/CallContainer';
 import ErrorScreen from '@/components/ErrorScreen';
-
+import { Button } from "@material-tailwind/react";
+import Link from 'next/link';
 type HomeState = {
   apiKey: string;
   user: User;
@@ -176,19 +176,40 @@ export default function Home() {
   if (homeState) return <CallContainer {...homeState} />;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+    <div
+    className="flex items-center justify-center min-h-screen bg-gray-900 text-white p-4"
+    style={{
+      backgroundImage: "url('/assets/bg.jpg')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    }}
+  >
+    <div className="bg-white bg-opacity-10 backdrop-blur-lg p-8 rounded-xl shadow-lg max-w-md w-full text-center">
       <div className="w-full sm:max-w-md bg-white p-6 rounded-xl shadow-md space-y-6">
         <div className="text-center">
           <h2 className="font-bold text-3xl">
             Sentimeet <span className="bg-[#f84525] text-white px-2 rounded-md">Meet</span>
           </h2>
-          <p className="text-gray-500 text-sm">
+          <p className="text-3xl font-bold mb-4 text-white">
             {step === 'register' ? 'Register a new account' : step === 'login' ? 'Login to your account' : 'Create or Join a Meeting'}
           </p>
         </div>
 
         {step === 'register' && (
           <form onSubmit={handleRegister} className="space-y-4">
+   <div className='mb-5 text-left'>
+          <label htmlFor='email' className='block text-sm font-medium text-gray-200 mb-2'>
+            Email Address
+          </label>
+          <input
+            type='email'
+            placeholder='example@gmail.com'
+            onChange={(e) => setEmail(e.target.value)}
+            className='w-full rounded-lg border border-gray-500 bg-gray-800 py-3 px-4 text-white placeholder-gray-400 outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-500' 
+          />
+        </div>
+
+
             <input type="email" required placeholder="Email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
             <input type="text" required placeholder="First Name" className="input" value={firstname} onChange={(e) => setFirstname(e.target.value)} />
             <input type="text" required placeholder="Last Name" className="input" value={lastname} onChange={(e) => setLastname(e.target.value)} />
@@ -248,5 +269,6 @@ export default function Home() {
         )}
       </div>
     </div>
-  );
+    </div>
+   );
 }
