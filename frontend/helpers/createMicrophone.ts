@@ -55,9 +55,9 @@ export function createMicrophone(stream: MediaStream) {
       const [buffer, blob] = await recorder.stop().getMp3();
       const baseUrl = 'https://api.assemblyai.com'
       const headers = {
-        authorization: "e03bccdc4e8d43b1ab9e7593f3d149f0", // Replace with your actual API key
+        authorization: process.env.ASSEMBLYAI_API_KEY || '', // Load API key from .env
         'content-type': 'application/json'
-      }
+      };
      
       const uploadResponse = await fetch(`${baseUrl}/v2/upload`, {
         method: 'POST',
@@ -97,6 +97,8 @@ export function createMicrophone(stream: MediaStream) {
         if (result.status === 'completed') {
           for (const utterance of result.utterances) {
             console.log(`Speaker ${utterance.speaker}: ${utterance.text}`)
+            const meetingId = getMeetingId(); // Retrieve the meetingId from page.tsx
+            console.log(`Meeting ID: ${meetingId}`);
           }
           break
         } else if (result.status === 'error') {
