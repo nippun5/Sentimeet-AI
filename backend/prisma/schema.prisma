@@ -29,6 +29,8 @@ model Meeting {
   createdAt   DateTime               @default(now())
   updatedAt   DateTime               @updatedAt
   participants MeetingParticipants[] @relation("MeetingParticipants")
+  meetingAnalytics Json?
+  meetingSummary String?
 
   @@map("meetings")
 }
