@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, Put } from '@nestjs/common';
+import { Controller, Post, Body, Param, Put,Get } from '@nestjs/common';
 import { MeetingsService } from './meeetings.service';
 import { CreateMeetingDto } from './dto/create-meeeting.dto';
 import { UpdateMeetingDto } from './dto/update-meeeting.dto';
@@ -26,5 +26,11 @@ export class MeetingsController {
   @Put('/analysis/:id')
   async updateMeetingTask( @Param('id') id: string,) {
     return this.meetingsService.analysis(id);
+  }
+
+
+  @Get()
+  async findAllMeetingsWithCount() {
+    return this.meetingsService.findAllMeetingsWithCount();
   }
 }
