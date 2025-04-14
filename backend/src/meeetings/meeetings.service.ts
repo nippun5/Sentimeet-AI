@@ -69,78 +69,6 @@ if (updateMeetingDto?.transcription === undefined) {
     return updatedMeeting;
   }
 
-//    async analysis(meetingId: string) {
-    
-//      const meetingTranscription = await this.prisma.meeting.findUnique({
-//       where:{id:meetingId}
-//      })
-
-    
-//   //  const genAI = new GoogleGenerativeAI(this.config.get('GEMINI_API_KEY'));
-//   const genAI = new GoogleGenerativeAI('AIzaSyD8iVBS7JTEeCD7GUSEngjZKfYd2OgaJBY');
-
- 
-//     try {
-//         const  transcript  = meetingTranscription?.transcription;
-
-//         if (!transcript || typeof transcript !== "string") {
-//             return "transcript (string) is required";
-//         }
-
-//         const prompt = `
-// Extract tasks and deadlines from the following meeting transcript. 
-// Return only valid JSON. Do NOT include any markdown or code blocks like \`\`\`. 
-// Use the exact date from calender in "mm-dd-yyy" format using today as start date.
-// Calculate the days remaining to complete the task.
-
-// Use the format: 
-// {
-// "meetingTask": [
-//   {
-//     "assignee": "Name",
-//     "task": "Task description",
-//     "deadline": "Due date"
-//     "days_remaining": "days remaining"
-//   }
-// ]
-      
-//   summary: "meeting summary"
-//       }
-
-// Transcript:
-// ${transcript}
-//         `.trim();
-
-//         const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-//         const result = await model.generateContent(prompt);
-//         const response = await result.response;
-//         let text = response.text();
-
-//         // Clean code block formatting if Gemini returns it anyway
-//         text = text.replace(/```json|```/g, "").trim();
-
-//         // Parse and return as JSON
-//         const tasks = JSON.parse(text);
-//         await this.prisma.meeting.update({
-//           where: { id: meetingId },
-//           data: {
-//             meetingSummary :response.summary        
-//           },
-//         })
-//         console.log ("Respons::::::"+tasks.map);
-//         return tasks;
-//     } catch (error) {
-//         console.error("Gemini API Error:", error.message);
-//         return response.status(500).json({ error: "Failed to process the request" });
-//     }
-
-// // const meetingTasks = await this.prisma.meetingTasks
-
-
-
-//     // return updatedMeeting;
-//   }
-
 async analysis(meetingId: string) {
   const meetingTranscription = await this.prisma.meeting.findUnique({
     where: { id: meetingId },
@@ -194,7 +122,6 @@ async findAllMeetingsWithCount() {
               user: true,
             },
           },
-          meetingTasks: true,
         },
       }),
       this.prisma.meeting.count(),
