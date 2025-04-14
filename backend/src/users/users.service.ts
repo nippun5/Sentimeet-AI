@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto, UpdateUserDto } from './dto/create-user.dto';
 import { UUID } from 'node:crypto';
+import { count } from 'node:console';
 
 
 
@@ -20,7 +21,11 @@ export class UsersService {
     }} );
   }
   async findAll() {
-    return this.prisma.user.findMany();
+    const [user,count]= await Promise.all([
+      this.prisma.user.findMany(),
+      this.prisma.user.count(),
+    ]);
+    return { user, count };    
   }
 
   async findOne(id: string) {
