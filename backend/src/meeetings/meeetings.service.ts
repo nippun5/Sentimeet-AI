@@ -7,6 +7,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { date } from 'zod';
+import { geminiPrompt } from 'src/app.constants';
 
 @Injectable()
 export class MeetingsService {
@@ -154,27 +155,8 @@ async analysis(meetingId: string) {
       return "transcript (string) is required";
     }
 
-    const prompt = `
-Extract tasks and deadlines from the following meeting transcript. 
-Return only valid JSON. Do NOT include any markdown or code blocks like \` \`. 
-Use the exact date from calendar in "mm-dd-yyyy" format using today as start date.
-Calculate the days remaining to complete the task.
-
-Use the format: 
-{
-  "meetingTask": [
-    {
-      "assignee": "Name",
-      "task": "Task description",
-      "deadline": "Due date",
-      "days_remaining": "days remaining"
-    }
-  ],
-  "summary": "meeting summary"
-}
-
-Transcript:
-${transcript}
+    const prompt = geminiPrompt+`Transcript:
+    ${transcript}
     `.trim();
 
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
