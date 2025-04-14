@@ -5,10 +5,11 @@ import { UpdateMeetingDto } from './dto/update-meeeting.dto';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 import { response } from 'express';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MeetingsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService,private config: ConfigService) {}
 
   // Create a new meeting
   async createMeeting(createMeetingDto: CreateMeetingDto) {
@@ -67,30 +68,27 @@ if (updateMeetingDto?.transcription === undefined) {
   }
 
    async analysis(meetingId: string) {
+    
      const meetingTranscription = await this.prisma.meeting.findUnique({
       where:{id:meetingId}
      })
 
-     // meetingTranscription?.transcription
-     //call gemini 
-
-    //  const update = await this.prisma.meeting.update({
-    //   where:{id:meetingId}
-    //  })
-
-   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    
+  //  const genAI = new GoogleGenerativeAI(this.config.get('GEMINI_API_KEY'));
+  const genAI = new GoogleGenerativeAI('AIzaSyD8iVBS7JTEeCD7GUSEngjZKfYd2OgaJBY');
 
  
     try {
-        const { transcript } = req.body;
+        const  transcript  = meetingTranscription?.transcription;
 
         if (!transcript || typeof transcript !== "string") {
-            return res.status(400).json({ error: "transcript (string) is required" });
+            return "transcript (string) is required";
         }
 
         const prompt = `
 Extract tasks and deadlines from the following meeting transcript. 
 Return only valid JSON. Do NOT include any markdown or code blocks like \`\`\`. 
+Use the exact date from calender.
 Use the format: 
 [
   {
@@ -114,13 +112,13 @@ ${transcript}
 
         // Parse and return as JSON
         const tasks = JSON.parse(text);
-        return response.json({ tasks });
+        return tasks;
     } catch (error) {
         console.error("Gemini API Error:", error.message);
         return response.status(500).json({ error: "Failed to process the request" });
     }
 
-
+// const meetingTasks = await this.prisma.meetingTasks
 
 
 

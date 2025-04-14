@@ -22,4 +22,9 @@ export class MeetingsController {
   ) {
     return this.meetingsService.updateMeeting(id, updateMeetingDto);
   }
+
+  @Put('/analysis/:id')
+  async updateMeetingTask( @Param('id') id: string,) {
+    return this.meetingsService.analysis(id);
+  }
 }
