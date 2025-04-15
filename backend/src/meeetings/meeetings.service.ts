@@ -72,8 +72,8 @@ async analysis(meetingId: string) {
   const meetingTranscription = await this.prisma.meeting.findUnique({
     where: { id: meetingId },
   });
-
-  const genAI = new GoogleGenerativeAI('AIzaSyD8iVBS7JTEeCD7GUSEngjZKfYd2OgaJBY');
+const geminiKey = this.config.get('GEMINI_API_KEY');
+  const genAI = new GoogleGenerativeAI(geminiKey);
 
   try {
     const transcript = meetingTranscription?.transcription;
