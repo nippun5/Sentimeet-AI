@@ -61,10 +61,13 @@ export default function CallContainer({
   }
 
   return (
+    <div className="min-h-screen bg-[url('/images/meeting-bg.png')] bg-cover bg-center bg-no-repeat flex items-center justify-center">
+
     <StreamVideo client={videoClient}>
       <StreamCall call={call}>
         <CallLayout />
       </StreamCall>
     </StreamVideo>
+    </div>
   );
 }
