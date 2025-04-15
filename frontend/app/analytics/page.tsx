@@ -30,6 +30,38 @@ const summaryData = [
   { title: "Average Score", value: "20" },
 ];
 
+interface Meeting {
+  dateTime: string;
+  title: string;
+  description: string;
+  participants: number;
+  taskassigned: number;
+}
+
+const meetings: Meeting[] = [
+  {
+    dateTime: '2025-04-14 10:00 AM',
+    title: 'Project Kickoff',
+    description: 'Introduction and planning for the new AI module.',
+    participants: 8,
+    taskassigned: 8,
+  },
+  {
+    dateTime: '2025-04-14 03:00 PM',
+    title: 'Design Review',
+    description: 'Review UI/UX mockups with the design team.',
+    participants: 5,
+    taskassigned: 6
+  },
+  {
+    dateTime: '2025-04-13 11:00 AM',
+    title: 'Client Meeting',
+    description: 'Monthly sync with the client to present progress.',
+    participants: 6,
+    taskassigned: 3
+  },
+];
+
 function Analytics() {
   const router = useRouter();
   const [selectedMonth, setSelectedMonth] = useState<string>("January");
@@ -61,9 +93,8 @@ function Analytics() {
   ))}
 </div>
 
-      {/* Main Two-Column Layout */}
-      <div className="flex flex-col lg:flex-row gap-6 w-full max-w-7xl mt-4">
-        {/* Left: Insights Card */}
+   
+     {/* <div className="flex flex-col lg:flex-row gap-6 w-full max-w-7xl mt-4">
         <div className="flex-1">
           <Card className="bg-white/10 backdrop-blur-xl  sm:p-10 rounded-2xl shadow-2xl w-full h-full space-y-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             <CardBody  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
@@ -80,9 +111,35 @@ function Analytics() {
               </ul>
             </CardBody>
           </Card>
+        </div> */}
+
+         <div className="flex flex-col lg:flex-row gap-6 w-full max-w-7xl mt-4">
+        <div className="flex-1">
+          <Card className="bg-white/10 backdrop-blur-xl  sm:p-10 rounded-2xl shadow-2xl w-full h-full space-y-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <CardBody  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+              <Typography variant="h5" className="mb-4 text-white"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                Daily Meeting Overview
+              </Typography>
+              <Typography className="text-white mb-4"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                Overview of daily meetings and insights.
+              </Typography>
+              <ul className="space-y-4">
+        {meetings.map((meeting, index) => (
+          <li key={index} className="bg-gray-800 p-4 rounded-lg shadow">
+            <p className="text-sm text-white">📅 {meeting.dateTime}</p>
+            <h3 className="text-white font-bold mt-1">{meeting.title}</h3>
+            <p className="text-white mt-1">{meeting.description}</p>
+            <div className="text-sm mt-2 text-gray-400 flex justify-between">
+              <span>👥 Participants: {meeting.participants}</span>
+              <span>✅ Tasks Assigned: {meeting.taskassigned}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+            </CardBody>
+          </Card>
         </div>
 
-        {/* Right: Monthly Analytics Card */}
         <div className="flex-1">
           <Card className="bg-white/10 backdrop-blur-xl  sm:p-10 rounded-2xl shadow-2xl w-full h-full  space-y-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             <CardBody  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
