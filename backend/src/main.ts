@@ -7,7 +7,7 @@ async function bootstrap() {
 
   // ✅ Enable CORS so frontend can talk to the backend
   app.enableCors({
-    origin: 'http://localhost:3000', // your Next.js frontend origin
+    origin: ['http://localhost:3000','https://frontend-three-chi-73.vercel.app/'], // your Next.js frontend origin
     credentials: true,
   });
 
