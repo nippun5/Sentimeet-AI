@@ -103,6 +103,19 @@ async analysis(meetingId: string) {
       },
     });
 
+    if (Array.isArray(parsed.tasks)) {
+      for (const task of parsed.tasks) {
+        await this.prisma.meetingTasks.create({
+          data: {
+            meetingId,
+            assignee: task.assignee,
+            task: task.task,
+            deadline: task.deadline,
+          },
+        });
+      }
+    }
+
     return parsed;
   } catch (error) {
     console.error("Gemini API Error:", error.message);
