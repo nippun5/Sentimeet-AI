@@ -1,3 +1,4 @@
+// @ts-ignore
 import MicRecorder from 'mic-recorder-to-mp3';
 import { mergeBuffers } from './mergeBuffers';
 import axios from 'axios';
