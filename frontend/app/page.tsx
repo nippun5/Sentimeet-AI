@@ -38,6 +38,7 @@ export default function Home() {
     e.preventDefault();
     setLoading(true);
     try {
+      //publicIP
       const res = await fetch(`http://3.133.152.112:8000/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
