@@ -105,6 +105,23 @@ async analysis(meetingId: string) {
         meetingSummary: parsed.summary,
       },
     });
+    await this.prisma.meetingTasks.create({
+      data: {
+        meetingId: meetingId,
+        task: "task.task",
+        deadline: "task.deadline",
+      },
+    })
+     for (const data of parsed.meetingTask){
+      await this.prisma.meetingTasks.create({
+        data: {
+          meetingId: meetingId,
+          task: data.task,
+          deadline: data.deadline,
+        },
+      });
+     }
+    
 
     return text;
   } catch (error) {
@@ -139,5 +156,17 @@ async findAllMeetingsWithCount() {
     console.error("Error fetching meetings:", error.message);
     throw new Error("Failed to fetch meetings");
   }
+}
+async findMeetingTaskById(meetingId: string) {
+  const meetingTasks = await this.prisma.meetingTasks.findMany({
+    where : {
+      meetingId: meetingId,
+    },
+    include: {
+      meeting: true,
+    },
+  });
+  return meetingTasks;
+
 }
 }
