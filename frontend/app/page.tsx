@@ -38,7 +38,7 @@ export default function Home() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:8000/auth/signup', {
+      const res = await fetch(process.env.BASE_URL+'/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, firstname, lastname, password }),
