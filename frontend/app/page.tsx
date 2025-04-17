@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';  // Make sure you have 'uuid' package installed
+import { v4 as uuidv4 } from 'uuid';
 import { jwtDecode } from 'jwt-decode';
 import { User } from '@stream-io/video-client';
 import CallContainer from '@/components/CallContainer';
 import ErrorScreen from '@/components/ErrorScreen';
+import { Button, Typography } from '@material-tailwind/react';
 
 type HomeState = {
   apiKey: string;
@@ -53,8 +54,9 @@ export default function Home() {
     }
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+
+  
+  const handleLogin = async () => {
     setLoading(true);
     try {
       const res = await fetch('http://localhost:8000/auth/login', {
@@ -67,11 +69,13 @@ export default function Home() {
       const decoded = jwtDecode<DecodedToken>(data.access_token);
 
       const user: User = {
-        id: decoded.sub, 
+        id: decoded.sub,
         name: `${decoded.firstname} ${decoded.lastname}`,
         image: `https://getstream.io/random_png/?id=${decoded.sub}&name=${decoded.firstname}`,
       };
 
+      
+     
       const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY!;
       if (!apiKey) throw new Error('Missing API key');
 
@@ -122,7 +126,6 @@ export default function Home() {
     }
   };
 
-  // Function to generate and set a new meeting ID
   const generateMeetingId = () => {
     const newMeetingId = uuidv4(); // Generate a new UUID for the meeting ID
     setMeetingId(newMeetingId); // Set it to the meetingId state
@@ -173,65 +176,51 @@ export default function Home() {
   };
 
   if (error) return <ErrorScreen error={error} />;
-  if (homeState) return <CallContainer {...homeState} />;
+  if (homeState && step === 'meeting') return <CallContainer {...homeState} />;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
-      <div className="w-full sm:max-w-md bg-white p-6 rounded-xl shadow-md space-y-6">
+    <div className="min-h-screen bg-[url('/images/bg.jpg')] bg-cover bg-center bg-no-repeat flex items-center justify-center">
+      <div className="bg-white/10 backdrop-blur-xl p-8 sm:p-10 rounded-2xl shadow-2xl w-full max-w-lg space-y-6">
         <div className="text-center">
-          <h2 className="font-bold text-3xl">
-            Sentimeet <span className="bg-[#f84525] text-white px-2 rounded-md">Meet</span>
+          <h2 className="text-4xl font-extrabold tracking-tight">
+            <span className="bg-[#f84525] px-3 py-1 rounded-md text-white">SentiMeet</span>
           </h2>
-          <p className="text-gray-500 text-sm">
-            {step === 'register' ? 'Register a new account' : step === 'login' ? 'Login to your account' : 'Create or Join a Meeting'}
+          <p className="text-lg font-medium mt-2 text-gray-200">
+            {step === 'register'
+              ? 'Register a new account'
+              : step === 'login'
+              ? 'Login to your account'
+              : 'Create or Join a Meeting'}
           </p>
         </div>
 
         {step === 'register' && (
           <form onSubmit={handleRegister} className="space-y-4">
-            <input type="email" required placeholder="Email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <input type="text" required placeholder="First Name" className="input" value={firstname} onChange={(e) => setFirstname(e.target.value)} />
-            <input type="text" required placeholder="Last Name" className="input" value={lastname} onChange={(e) => setLastname(e.target.value)} />
-            <input type="password" required placeholder="Password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <button disabled={loading} className="btn-red w-full">{loading ? 'Registering...' : 'Register'}</button>
-            <p className="text-sm text-center">
+            <input type="email" required placeholder="Email" className="input-style w-full ..." value={email} onChange={(e) => setEmail(e.target.value)} />
+            <div className="flex gap-4">
+              <input type="text" required placeholder="First Name" className="input-style w-1/2 ..." value={firstname} onChange={(e) => setFirstname(e.target.value)} />
+              <input type="text" required placeholder="Last Name" className="input-style w-1/2 ..." value={lastname} onChange={(e) => setLastname(e.target.value)} />
+            </div>
+            <input type="password" required placeholder="Password" className="input-style w-full ..." value={password} onChange={(e) => setPassword(e.target.value)} />
+            <Button disabled={loading} type="submit" className="btn-primary" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+              {loading ? 'Registering...' : 'Register'}
+            </Button>
+            <Typography className="text-sm text-center text-gray-300" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               Already have an account?{' '}
-              <button type="button" onClick={() => setStep('login')} className="text-[#f84525] font-semibold">Login</button>
-            </p>
+              <button type="button" onClick={() => setStep('login')} className="text-[#f84525] font-semibold underline">Login</button>
+            </Typography>
           </form>
         )}
 
         {step === 'login' && (
-          <form onSubmit={handleLogin} className="space-y-4">
-            <input type="email" required placeholder="Email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <input type="password" required placeholder="Password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} />
-            
-            {/* Add the Meeting ID and Title fields */}
-            <input 
-              type="text" 
-              required 
-              placeholder="Meeting Title" 
-              className="input" 
-              value={meetingTitle} 
-              onChange={(e) => setMeetingTitle(e.target.value)} 
-            />
-            <input 
-              type="text" 
-              required 
-              placeholder="Meeting ID" 
-              className="input" 
-              value={meetingId} 
-              onChange={(e) => setMeetingId(e.target.value)} 
-            />
-            
-            {/* Button to generate a new Meeting ID */}
-            <button 
-              type="button" 
-              onClick={generateMeetingId} 
-              className="w-full bg-blue-500 text-white py-2.5 rounded-md hover:bg-blue-700 transition font-semibold"
-            >
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+            <input type="email" required placeholder="Email" className="input-style w-full ..." value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input type="password" required placeholder="Password" className="input-style w-full ..." value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input type="text" required placeholder="Meeting Title" className="input-style w-full ..." value={meetingTitle} onChange={(e) => setMeetingTitle(e.target.value)} />
+            <input type="text" required placeholder="Meeting ID" className="input-style w-full ..." value={meetingId} onChange={(e) => setMeetingId(e.target.value)} />
+            <Button type="button" onClick={generateMeetingId} className="btn-secondary mr-5" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               Generate Meeting ID
-            </button>
+            </Button>
 
             <button 
               disabled={loading} 
@@ -242,11 +231,12 @@ export default function Home() {
             </button>
             <p className="text-sm text-center">
               New user?{' '}
-              <button type="button" onClick={() => setStep('register')} className="text-[#f84525] font-semibold">Register</button>
+              <button type="button" onClick={() => setStep('register')} className="text-[#f84525] font-semibold underline">Register</button>
             </p>
           </form>
         )}
       </div>
     </div>
+   
   );
 }
