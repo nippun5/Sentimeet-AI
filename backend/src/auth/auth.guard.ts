@@ -40,9 +40,14 @@ export class JwtAuthGuard implements CanActivate {
         }
     }
 
-    // Method to verify JWT token
     private verifyToken(token: string) {
         const secret = this.configService.get<string>('JWT_SECRET');
+    
+        if (!secret) {
+            throw new Error('JWT secret is not defined in environment variables');
+        }
+    
         return jwt.verify(token, secret); // Verifies the token using the secret
     }
+    
 }
