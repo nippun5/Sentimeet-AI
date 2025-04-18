@@ -47,10 +47,11 @@ function Analytics() {
   
 
   useEffect(() => {
+    const baseUrl = process.env.BASE_URL;
     const fetchMeetings = async () => {
       try {
-        const res = await fetch("http://localhost:8000/meetings");
-        const data = await res.json();
+        const res = await fetch(`http://18.224.238.26:8000/meetings`);
+      const data = await res.json();
         const meetings: Meeting[] = data.meetings || [];
         setMeetings(meetings);
 
@@ -81,10 +82,10 @@ function Analytics() {
     <div className="min-h-screen bg-[url('/images/bg.jpg')] bg-cover bg-center bg-no-repeat flex flex-col items-center justify-start p-6 gap-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-6 w-full max-w-7xl">
-        <Typography variant="h4" className="text-white">
+        <Typography variant="h4" className="text-white"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           Sentimeet Dashboard
         </Typography>
-        <Button color="white" className="ml-4" onClick={() => router.push("/")}>
+        <Button color="white" className="ml-4" onClick={() => router.push("/")} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           Start New Meeting +
         </Button>
       </div>
