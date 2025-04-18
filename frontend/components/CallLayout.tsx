@@ -96,7 +96,7 @@ export default function CallLayout(): JSX.Element {
 <Typography variant="h5" className="text-gray-900 mb-2  tracking-wide"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
     {"Meeting ended"}
   </Typography>
-  <Typography variant="small" className="text-gray-500 mb-5  tracking-wide">
+  <Typography variant="small" className="text-gray-500 mb-5  tracking-wide"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
     {" go to dashboard to see analytics and other meeting outcomes."}
   </Typography>
   <Button className="btn-primary" onClick={() => router.push('/analytics')} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
