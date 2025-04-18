@@ -35,11 +35,12 @@ export default function MeetingDetailsPage() {
   const [meeting, setMeeting] = useState<Meeting | null>(null);
   const [loading, setLoading] = useState(true);
   const [meetingTasks, setMeetingTasks] = useState<MeetingTask[]>([]);
-
+  const baseUrl = process.env.BASE_URL;
   useEffect(() => {
+  
     const fetchMeeting = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/meetings/${id}`, {
+        const res = await fetch(`http://18.224.238.26:8000/meetings/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -62,7 +63,7 @@ export default function MeetingDetailsPage() {
   useEffect(() => {
     const fetchMeetingTasks = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/meetings/meetingTasks/${id}`);
+        const res = await fetch(`http://18.224.238.26:8000/meetings/meetingTasks/${id}`);
         const data = await res.json();
         if (Array.isArray(data)) {
           setMeetingTasks(data);
