@@ -80,50 +80,50 @@ export default function MeetingDetailsPage() {
 
   return (
     <div className="min-h-screen bg-[url('/images/bg.jpg')] bg-cover bg-center bg-no-repeat flex items-center justify-center p-6">
-      <Card className="w-full max-w-4xl bg-white/10 backdrop-blur-xl p-6 rounded-2xl shadow-2xl text-white">
-        <CardBody>
+      <Card className="w-full max-w-4xl bg-white/10 backdrop-blur-xl p-6 rounded-2xl shadow-2xl text-white"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <CardBody  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           {loading ? (
-            <Typography variant="h2" className="text-center">Loading...</Typography>
+            <Typography variant="h2" className="text-center"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Loading...</Typography>
           ) : meeting ? (
             <div className="space-y-6">
               <div>
-                <Typography variant="h5" className="font-bold">Meeting Details Analysis</Typography>
-                <Typography variant="h6" className="font-bold">{meeting.title}</Typography>
-                <Typography><strong>Date:</strong> {new Date(meeting.createdAt).toLocaleDateString()}</Typography>
-                <Typography><strong>Description:</strong> {meeting.meetingSummary}</Typography>
-                <Typography><strong>Tasks Assigned:</strong> {meeting.tasks ?? meetingTasks.length}</Typography>
+                <Typography variant="h5" className="font-bold"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Meeting Details Analysis</Typography>
+                <Typography variant="h6" className="font-bold"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{meeting.title}</Typography>
+                <Typography  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}><strong>Date:</strong> {new Date(meeting.createdAt).toLocaleDateString()}</Typography>
+                <Typography  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}><strong>Description:</strong> {meeting.meetingSummary}</Typography>
+                <Typography  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}><strong>Tasks Assigned:</strong> {meeting.tasks ?? meetingTasks.length}</Typography>
               </div>
               {meeting.meetingSummary && (
                 <div>
-                  <Typography variant="h5" className="font-bold mt-6">Meeting Summary</Typography>
+                  <Typography variant="h5" className="font-bold mt-6"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Meeting Summary</Typography>
                   <div className="bg-white/20 backdrop-blur-sm p-4 rounded-xl mt-2">
-                    <Typography>{meeting.meetingSummary}</Typography>
+                    <Typography placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{meeting.meetingSummary}</Typography>
                   </div>
                 </div>
               )}
 
               <div>
-                <Typography variant="h5" className="font-bold mt-6">Meeting Tasks</Typography>
+                <Typography variant="h5" className="font-bold mt-6" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Meeting Tasks</Typography>
                 <div className="max-h-64 overflow-y-auto pr-2 space-y-4 mt-4">
                   {Array.isArray(meetingTasks) && meetingTasks.length > 0 ? (
                     meetingTasks.map((task) => (
                       <div key={task.id} className="border-b border-gray-700 pb-2">
-                        <Typography variant="h6" className="font-bold">{task.task}</Typography>
-                        <Typography><strong>Assignee:</strong> {task.assignee ?? "Unassigned"}</Typography>
-                        <Typography><strong>Deadline:</strong> {new Date(task.deadline).toLocaleDateString()}</Typography>
+                        <Typography variant="h6" className="font-bold"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{task.task}</Typography>
+                        <Typography  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}><strong>Assignee:</strong> {task.assignee ?? "Unassigned"}</Typography>
+                        <Typography  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}><strong>Deadline:</strong> {new Date(task.deadline).toLocaleDateString()}</Typography>
                         {task.meeting?.summary && (
-                          <Typography><strong>Summary:</strong> {task.meeting.summary}</Typography>
+                          <Typography placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}><strong>Summary:</strong> {task.meeting.summary}</Typography>
                         )}
                       </div>
                     ))
                   ) : (
-                    <Typography>No tasks found.</Typography>
+                    <Typography  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>No tasks found.</Typography>
                   )}
                 </div>
               </div>
             </div>
           ) : (
-            <Typography variant="h6" className="text-center text-red-400">
+            <Typography variant="h6" className="text-center text-red-400" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               Meeting not found.
             </Typography>
           )}
