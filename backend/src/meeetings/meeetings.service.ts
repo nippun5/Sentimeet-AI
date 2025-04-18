@@ -56,16 +56,19 @@ export class MeetingsService {
   
 
   async updateMeeting(id: string, updateMeetingDto: UpdateMeetingDto) {
+    console.log("tramscriptio........n",updateMeetingDto.transcription)
 if (updateMeetingDto?.transcription === undefined) {
       throw new Error('Transcription is required');
     }
+
+    console.log("tramscriptio........n",updateMeetingDto.transcription)
     const updatedMeeting = await this.prisma.meeting.update({
       where: { id },
       data: {
         transcription: updateMeetingDto.transcription,
       },
     });
-
+    await this.analysis(id);
     return updatedMeeting;
   }
 
@@ -162,10 +165,7 @@ async findMeetingTaskById(meetingId: string) {
   const meetingTasks = await this.prisma.meetingTasks.findMany({
     where : {
       meetingId: meetingId,
-    },
-    include: {
-      meeting: true,
-    },
+    }
   });
   return meetingTasks;
 

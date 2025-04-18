@@ -1,9 +1,9 @@
 'use client';
-
 import Image from 'next/image';
 import { createMicrophone } from '@/helpers/createMicrophone';
 import { createTranscriber } from '@/helpers/createTranscriber';
 import { CallingState } from '@stream-io/video-client';
+import { useRouter } from 'next/navigation';
 import {
   useCallStateHooks,
   StreamTheme,
@@ -15,8 +15,11 @@ import { useCallback, useState } from 'react';
 import robotImage from '../assets/recorder.png';
 import assistant from '../assets/assistant.png';
 import { RealtimeTranscriber } from 'assemblyai';
+import { Button, Card, Typography } from '@material-tailwind/react';
+
 
 export default function CallLayout(): JSX.Element {
+  const router = useRouter();
   // Text to display what is transcribed from AssemblyAI
   const [transcribedText, setTranscribedText] = useState<string>('');
   const [llmActive, setLllmActive] = useState<boolean>(false);
@@ -87,11 +90,23 @@ export default function CallLayout(): JSX.Element {
 
   if (callingState !== CallingState.JOINED) {
     return (
-      <section className='h-screen w-screen flex items-center justify-center animate-pulse font-bold'>
-        Loading...
+      <section className='h-screen w-screen flex items-center justify-center font-bold'>
+<Card
+          className="shadow-xl flex flex-col justify-center items-center bg-white text-black h-36 p-6 border border-gray-300 rounded-2xl hover:shadow-2xl transition-all duration-300"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+<Typography variant="h5" className="text-gray-900 mb-2  tracking-wide"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+    {"Meeting ended"}
+  </Typography>
+  <Typography variant="small" className="text-gray-500 mb-5  tracking-wide">
+    {" go to dashboard to see analytics and other meeting outcomes."}
+  </Typography>
+  <Button className="btn-primary" onClick={() => router.push('/analytics')} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      Go To Dashboard
+      </Button>
+</Card>  
       </section>
     );
   }
+  
 
   return (
     <StreamTheme>
