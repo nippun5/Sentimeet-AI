@@ -40,7 +40,7 @@ export default function MeetingDetailsPage() {
   
     const fetchMeeting = async () => {
       try {
-        const res = await fetch(`http://18.224.238.26:8000/meetings/${id}`, {
+        const res = await fetch(`https://backend.kamalajoshi.site/meetings/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -63,7 +63,7 @@ export default function MeetingDetailsPage() {
   useEffect(() => {
     const fetchMeetingTasks = async () => {
       try {
-        const res = await fetch(`http://18.224.238.26:8000/meetings/meetingTasks/${id}`);
+        const res = await fetch(`https://backend.kamalajoshi.site/meetings/meetingTasks/${id}`);
         const data = await res.json();
         if (Array.isArray(data)) {
           setMeetingTasks(data);

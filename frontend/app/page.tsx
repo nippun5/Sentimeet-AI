@@ -42,7 +42,7 @@ export default function Home() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch(`http://18.224.238.26:8000/auth/signup`, {
+      const res = await fetch(`https://backend.kamalajoshi.site/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, firstname, lastname, password }),
@@ -63,7 +63,7 @@ export default function Home() {
   
     setLoading(true);
     try {
-      const res = await fetch(`http://18.224.238.26:8000/auth/login`, {
+      const res = await fetch(`https://backend.kamalajoshi.site/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -99,7 +99,7 @@ export default function Home() {
       };
 
       // Send the API request to create the meeting
-      const meetingres = await fetch(`http://18.224.238.26:8000/meetings`, {
+      const meetingres = await fetch(`https://backend.kamalajoshi.site/meetings`, {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -154,7 +154,7 @@ export default function Home() {
       };
 
       // Send the API request to create the meeting
-      const res = await fetch(`http://18.224.238.26:8000/meetings`, {
+      const res = await fetch(`https://backend.kamalajoshi.site/meetings`, {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -217,22 +217,32 @@ export default function Home() {
         )}
 
         {step === 'login' && (
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
-            <input type="email" required placeholder="Email" className="input-style w-full ..." value={email} onChange={(e) => setEmail(e.target.value)} />
+          <form onSubmit={(e) =>{
+            
+            e.preventDefault();
+            handleLogin(); 
+            
+            }} className="space-y-4">
+            <input type="email" required placeholder="Email" className="input-style w-full ..." value={email} onChange={(e) => setEmail(e.target.value)}  />
             <input type="password" required placeholder="Password" className="input-style w-full ..." value={password} onChange={(e) => setPassword(e.target.value)} />
-            <input type="text" required placeholder="Meeting Title" className="input-style w-full ..." value={meetingTitle} onChange={(e) => setMeetingTitle(e.target.value)} />
+            <input type="text" required  placeholder="Meeting Title" className="input-style w-full ..." value={meetingTitle} onChange={(e) => setMeetingTitle(e.target.value)} />
             <input type="text" required placeholder="Meeting ID" className="input-style w-full ..." value={meetingId} onChange={(e) => setMeetingId(e.target.value)} />
             <Button type="button" onClick={generateMeetingId} className="btn-secondary mr-5" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               Generate Meeting ID
             </Button>
 
-            <button 
-              disabled={loading} 
+            <Button 
+            type='submit'
+              disabled={loading}
               className="btn-green w-full"
-              onClick={handleLogin} // Trigger meeting creation on button click
-            >
+            
+              placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               {loading ? 'Creating Meeting...' : 'Join Meeting'}
-            </button>
+              {error && (
+  <Typography className="text-red-500 text-sm text-center" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+    {error}
+  </Typography>)}
+            </Button>
             <p className="text-sm text-center">
               New user?{' '}
               <button type="button" onClick={() => setStep('register')} className="text-[#f84525] font-semibold underline">Register</button>
