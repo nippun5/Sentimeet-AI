@@ -42,7 +42,7 @@ export default function Home() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch(`http://18.224.238.26:8000/auth/signup`, {
+      const res = await fetch(`http://localhost:8000/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, firstname, lastname, password }),
@@ -63,7 +63,7 @@ export default function Home() {
   
     setLoading(true);
     try {
-      const res = await fetch(`http://18.224.238.26:8000/auth/login`, {
+      const res = await fetch(`http://localhost:8000/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -99,7 +99,7 @@ export default function Home() {
       };
 
       // Send the API request to create the meeting
-      const meetingres = await fetch(`http://18.224.238.26:8000/meetings`, {
+      const meetingres = await fetch(`http://localhost:8000/meetings`, {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -154,7 +154,7 @@ export default function Home() {
       };
 
       // Send the API request to create the meeting
-      const res = await fetch(`http://18.224.238.26:8000/meetings`, {
+      const res = await fetch(`http://localhost:8000/meetings`, {
         method: 'POST',
         headers: {
           'accept': '*/*',
