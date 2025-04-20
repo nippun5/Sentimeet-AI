@@ -98,7 +98,7 @@ export function createMicrophone(stream: MediaStream) {
         if (result.status === 'completed') {
           for (const utterance of result.utterances) {
             const meetingId = localStorage.getItem("meetingId");
-            await fetch(`http://localhost:8000/meetings/${meetingId}`, {
+            await fetch(`https://backend.kamalajoshi.site/meetings/${meetingId}`, {
               method: 'PUT',
               headers: {
                 'accept': '*/*',
