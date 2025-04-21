@@ -12,8 +12,9 @@ type HomeState = {
   apiKey: string;
   user: User;
   token: string;
-  meetingId: string;
-  meetingTitle: string;
+  // meetingId: string;
+  // // meetingTitle: string;
+  authorization: string;
 };
 
 type DecodedToken = {
@@ -79,19 +80,14 @@ export default function Home() {
       const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY!;
       if (!apiKey) throw new Error('Missing API key');
 
-      setHomeState({
-        apiKey,
-        user,
-        token: data.stream_token,
-        meetingId,
-        meetingTitle,
-      });
+     
       const meetingData = {
         title: meetingTitle,
         description: 'Meeting description goes here', // Optional, modify as needed
         participants: [
           { userId: decoded.sub }, // Use the user ID from the token
         ],
+
       };
 
       // Send the API request to create the meeting
@@ -103,13 +99,27 @@ export default function Home() {
         },
         body: JSON.stringify(meetingData),
       });
+      
 
       if (!res.ok) {
         throw new Error(`Failed to create meeting: ${res.statusText}`);
       }
 
       // If successful, show a success message or redirect
-      const meetingdata = await meetingres.json();
+      const meetingdata = await meetingres.json().then((data) => {
+        console.log('Meeting data:', data);
+        return data;
+      });
+      const meetingId = meetingdata.id; // Get the meeting ID from the response
+      console.log("meetingid................................",meetingId)
+      setHomeState({
+        apiKey,
+        user,
+        authorization: data.access_token,
+        token: data.stream_token
+        // meetingId: meetingId,
+        // meetingTitle,
+      });
      
       localStorage.setItem("meetingId", meetingdata.id); // Save it to localStorage
       alert('Meeting created successfully!');

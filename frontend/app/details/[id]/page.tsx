@@ -40,7 +40,7 @@ export default function MeetingDetailsPage() {
     const fetchMeeting = async () => {
       try {
         const res = await fetch(`http://localhost:8000/meetings/${id}`, {
-          method: "PUT",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
