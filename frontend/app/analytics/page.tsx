@@ -48,10 +48,11 @@ function Analytics() {
   
 
   useEffect(() => {
+    const baseUrl = process.env.BASE_URL;
     const fetchMeetings = async () => {
       try {
-        const res = await fetch("http://localhost:8000/meetings");
-        const data = await res.json();
+        const res = await fetch(`https://backend.kamalajoshi.site/meetings`);
+      const data = await res.json();
         const meetings: Meeting[] = data.meetings || [];
         setMeetings(meetings);
 
@@ -82,10 +83,10 @@ function Analytics() {
     <div className="min-h-screen bg-[url('/images/bg.jpg')] bg-cover bg-center bg-no-repeat flex flex-col items-center justify-start p-6 gap-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-6 w-full max-w-7xl">
-        <Typography variant="h4" className="text-white">
+        <Typography variant="h4" className="text-white"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           Sentimeet Dashboard
         </Typography>
-        <Button color="white" className="ml-4" onClick={() => router.push("/")}>
+        <Button color="white" className="ml-4" onClick={() => router.push("/")} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           Start New Meeting +
         </Button>
       </div>
@@ -94,19 +95,19 @@ function Analytics() {
       <div className="flex w-full max-w-7xl gap-6">
         {/* Left Summary Column */}
         <div className="w-1/3 space-y-4">
-          <Card className="bg-white/10 backdrop-blur-xl p-6 rounded-2xl shadow-2xl">
-            <Typography variant="h6" className="text-white mb-1">
+          <Card className="bg-white/10 backdrop-blur-xl p-6 rounded-2xl shadow-2xl"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Typography variant="h6" className="text-white mb-1"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               Total Users
             </Typography>
-            <Typography variant="h5" className="font-bold text-white">
+            <Typography variant="h5" className="font-bold text-white"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               {loading ? "..." : totalUsers}
             </Typography>
           </Card>
-          <Card className="bg-white/10 backdrop-blur-xl p-6 rounded-2xl shadow-2xl">
-            <Typography variant="h6" className="text-white mb-1">
+          <Card className="bg-white/10 backdrop-blur-xl p-6 rounded-2xl shadow-2xl" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Typography variant="h6" className="text-white mb-1" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               Total Tasks Assigned
             </Typography>
-            <Typography variant="h5" className="font-bold text-white">
+            <Typography variant="h5" className="font-bold text-white"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               {loading ? "..." : totalTasks}
             </Typography>
           </Card>
@@ -114,31 +115,31 @@ function Analytics() {
 
         {/* Right Meeting Analytics Column */}
         <div className="w-2/3">
-          <Card className="bg-white/10 backdrop-blur-xl p-6 rounded-2xl shadow-2xl space-y-6 w-full">
-            <CardBody>
-              <Typography variant="h4" className="mb-4 text-white">
+          <Card className="bg-white/10 backdrop-blur-xl p-6 rounded-2xl shadow-2xl space-y-6 w-full" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <CardBody  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+              <Typography variant="h4" className="mb-4 text-white"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 Meeting Analytics
               </Typography>
-              <Typography className="mb-6 text-white">
+              <Typography className="mb-6 text-white"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 View all meeting details, tasks assigned, and participant info.
               </Typography>
 
               {loading ? (
-                <Typography className="text-white">
+                <Typography className="text-white" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                   Loading meetings...
                 </Typography>
               ) : meetings.length > 0 ? (
                 <div className="space-y-4">
                   {meetings.map((meeting, index) => (
-                    <Card key={index} className="bg-gray-200 text-gray-800"   onClick={() =>router.push(`/details/${meeting.id}`)}>
-                      <CardBody>
-                        <Typography variant="h5" className="font-semibold">
+                    <Card key={index} className="bg-gray-200 text-gray-800" onClick={() => router.push(`/details/${meeting.id}`)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                      <CardBody  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        <Typography variant="h5" className="font-semibold"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                           {meeting.title}
                         </Typography>
-                        <Typography className="text-sm mb-2 text-gray-600">
+                        <Typography className="text-sm mb-2 text-gray-600"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                           {new Date(meeting.createdAt).toLocaleDateString()}
                         </Typography>
-                        <Typography className="mb-3">
+                        <Typography className="mb-3"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                           {meeting.description}
                         </Typography>
                         <div className="flex justify-between text-sm font-medium text-gray-700">
@@ -151,7 +152,7 @@ function Analytics() {
                   ))}
                 </div>
               ) : (
-                <Typography className="text-white">No meetings available.</Typography>
+                <Typography className="text-white" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>No meetings available.</Typography>
               )}
             </CardBody>
           </Card>
