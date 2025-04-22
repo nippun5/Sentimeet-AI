@@ -72,6 +72,26 @@ if (updateMeetingDto?.transcription === undefined) {
     return updatedMeeting;
   }
 
+ async getMeetingById(id: string) { 
+    const meeting = await this.prisma.meeting.findUnique({
+      where: { id },
+      include: {
+        participants: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    if (!meeting) {
+      throw new Error('Meeting not found');
+    }
+
+    return meeting;
+  
+ }
+
 async analysis(meetingId: string) {
   const meetingTranscription = await this.prisma.meeting.findUnique({
     where: { id: meetingId },
@@ -109,13 +129,7 @@ async analysis(meetingId: string) {
         meetingSummary: parsed.summary,
       },
     });
-    await this.prisma.meetingTasks.create({
-      data: {
-        meetingId: meetingId,
-        task: "task.task",
-        deadline: "task.deadline",
-      },
-    })
+    
      for (const data of parsed.meetingTask){
       await this.prisma.meetingTasks.create({
         data: {
@@ -162,6 +176,7 @@ async findAllMeetingsWithCount() {
   }
 }
 async findMeetingTaskById(meetingId: string) {
+
   const meetingTasks = await this.prisma.meetingTasks.findMany({
     where : {
       meetingId: meetingId,
