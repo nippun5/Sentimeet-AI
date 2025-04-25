@@ -51,7 +51,7 @@ function Analytics() {
     const baseUrl = process.env.BASE_URL;
     const fetchMeetings = async () => {
       try {
-        const res = await fetch(`https://backend.kamalajoshi.site/meetings`);
+        const res = await fetch(`http://backend.kamalajoshi.site:8000/meetings`);
       const data = await res.json();
         const meetings: Meeting[] = data.meetings || [];
         setMeetings(meetings);

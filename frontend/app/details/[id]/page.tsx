@@ -2,11 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import {
-  Typography,
-  Card,
-  CardBody,
-} from "@material-tailwind/react";
 
 interface Meeting {
   id: string;
@@ -18,7 +13,13 @@ interface Meeting {
   meetingAnalytics: any;
   meetingSummary: any;
   summary?: string;
-  tasks?: number;
+  meetingTask?: {
+    id: string;
+    task: string;
+    deadline: string;
+    assignee: string | null;
+    days_remaining: number;
+  }[];
 }
 
 export interface MeetingTask {
@@ -39,12 +40,11 @@ export default function MeetingDetailsPage() {
   useEffect(() => {
     const fetchMeeting = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/meetings/${id}`, {
+        const res = await fetch(`http://backend.kamalajoshi.site:8000/meetings/${id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ transcription: "string" }),
         });
 
         const data = await res.json();
@@ -62,7 +62,7 @@ export default function MeetingDetailsPage() {
   useEffect(() => {
     const fetchMeetingTasks = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/meetings/meetingTasks/${id}`);
+        const res = await fetch(`http://backend.kamalajoshi.site:8000/meetingTasks/${id}`);
         const data = await res.json();
         if (Array.isArray(data)) {
           setMeetingTasks(data);
@@ -79,55 +79,57 @@ export default function MeetingDetailsPage() {
 
   return (
     <div className="min-h-screen bg-[url('/images/bg.jpg')] bg-cover bg-center bg-no-repeat flex items-center justify-center p-6">
-      <Card className="w-full max-w-4xl bg-white/10 backdrop-blur-xl p-6 rounded-2xl shadow-2xl text-white">
-        <CardBody>
-          {loading ? (
-            <Typography variant="h2" className="text-center">Loading...</Typography>
-          ) : meeting ? (
-            <div className="space-y-6">
-              <div>
-                <Typography variant="h5" className="font-bold">Meeting Details Analysis</Typography>
-                <Typography variant="h6" className="font-bold">{meeting.title}</Typography>
-                <Typography><strong>Date:</strong> {new Date(meeting.createdAt).toLocaleDateString()}</Typography>
-                <Typography><strong>Description:</strong> {meeting.meetingSummary}</Typography>
-                <Typography><strong>Tasks Assigned:</strong> {meeting.tasks ?? meetingTasks.length}</Typography>
-              </div>
-              {meeting.meetingSummary && (
-                <div>
-                  <Typography variant="h5" className="font-bold mt-6">Meeting Summary</Typography>
-                  <div className="bg-white/20 backdrop-blur-sm p-4 rounded-xl mt-2">
-                    <Typography>{meeting.meetingSummary}</Typography>
-                  </div>
-                </div>
-              )}
+      <div className="w-full max-w-4xl bg-white/10 backdrop-blur-xl p-8 rounded-2xl shadow-2xl text-white">
+        {loading ? (
+          <h2 className="text-3xl font-bold text-center">Loading...</h2>
+        ) : meeting ? (
+          <div className="space-y-6">
+            {/* Meeting Details */}
+            <div>
+              <h3 className="text-2xl font-bold mb-2">Meeting Details Analysis</h3>
+              <h4 className="text-xl font-semibold">{meeting.title}</h4>
+              <p><strong>Date:</strong> {new Date(meeting.createdAt).toLocaleDateString()}</p>
+              <p><strong>Description:</strong> {meeting.meetingSummary}</p>
+              <p><strong>Tasks Assigned:</strong> {meeting.meetingTask?.length ?? meetingTasks.length}</p>
+            </div>
 
+            {/* Meeting Summary */}
+            {meeting.meetingSummary && (
               <div>
-                <Typography variant="h5" className="font-bold mt-6">Meeting Tasks</Typography>
-                <div className="max-h-64 overflow-y-auto pr-2 space-y-4 mt-4">
-                  {Array.isArray(meetingTasks) && meetingTasks.length > 0 ? (
-                    meetingTasks.map((task) => (
-                      <div key={task.id} className="border-b border-gray-700 pb-2">
-                        <Typography variant="h6" className="font-bold">{task.task}</Typography>
-                        <Typography><strong>Assignee:</strong> {task.assignee ?? "Unassigned"}</Typography>
-                        <Typography><strong>Deadline:</strong> {new Date(task.deadline).toLocaleDateString()}</Typography>
-                        {task.meeting?.summary && (
-                          <Typography><strong>Summary:</strong> {task.meeting.summary}</Typography>
-                        )}
-                      </div>
-                    ))
-                  ) : (
-                    <Typography>No tasks found.</Typography>
-                  )}
+                <h3 className="text-2xl font-bold mt-6">Meeting Summary</h3>
+                <div className="bg-white/20 backdrop-blur-sm p-4 rounded-xl mt-2">
+                  <p>{meeting.meetingSummary}</p>
                 </div>
+              </div>
+            )}
+
+            {/* Meeting Tasks */}
+            <div>
+              <h3 className="text-2xl font-bold mt-6">Meeting Tasks</h3>
+              <div className="max-h-64 overflow-y-auto pr-2 space-y-4 mt-4">
+                {Array.isArray(meetingTasks) && meetingTasks.length > 0 ? (
+                  meetingTasks.map((task) => (
+                    <div key={task.id} className="border-b border-gray-700 pb-2">
+                      <h4 className="text-lg font-semibold">{task.task}</h4>
+                      <p><strong>Assignee:</strong> {task.assignee ?? "Unassigned"}</p>
+                      <p><strong>Deadline:</strong> {new Date(task.deadline).toLocaleDateString()}</p>
+                      {task.meeting?.summary && (
+                        <p><strong>Summary:</strong> {task.meeting.summary}</p>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <p>No tasks found.</p>
+                )}
               </div>
             </div>
-          ) : (
-            <Typography variant="h6" className="text-center text-red-400">
-              Meeting not found.
-            </Typography>
-          )}
-        </CardBody>
-      </Card>
+          </div>
+        ) : (
+          <h4 className="text-lg font-semibold text-center text-red-400">
+            Meeting not found.
+          </h4>
+        )}
+      </div>
     </div>
   );
 }

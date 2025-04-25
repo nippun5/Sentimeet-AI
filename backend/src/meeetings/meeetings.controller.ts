@@ -38,4 +38,9 @@ export class MeetingsController {
   async findAllMeetingTasks(@Param('id') id: string,) {
     return this.meetingsService.findMeetingTaskById(id);
   }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.meetingsService.findMeetingById(id);
+  }
 }
