@@ -135,6 +135,7 @@ async analysis(meetingId: string) {
         data: {
           meetingId: meetingId,
           task: data.task,
+          assignee: data.assignee,
           deadline: data.deadline,
         },
       });
@@ -184,5 +185,18 @@ async findMeetingTaskById(meetingId: string) {
   });
   return meetingTasks;
 
+}
+async findMeetingById(meetingId: string) {
+  return await this.prisma.meeting.findUnique({
+    where: { id: meetingId },
+    include: {
+      participants: {
+        include: {
+          user: true,
+        },
+      },
+      meetingTasks: true,
+    },
+  });
 }
 }

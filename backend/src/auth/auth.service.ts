@@ -30,6 +30,7 @@ export class AuthService {
 
   // -----------------register user to database-------------------
   async register(dto: CreateUserDto): Promise<TokenType> {
+    console.log("here..................")
     const { email, password, firstname, lastname } = dto;
 
     // await this.checkUniqueEmail(email);
