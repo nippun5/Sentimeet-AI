@@ -54,7 +54,9 @@ function Analytics() {
     const baseUrl = process.env.BASE_URL;
     const fetchMeetings = async () => {
       try {
+
         const res = await fetch(`${process.env.BASE_URL}/meetings`);
+
       const data = await res.json();
         const meetings: Meeting[] = data.meetings || [];
         setMeetings(meetings);

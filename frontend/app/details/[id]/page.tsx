@@ -42,7 +42,9 @@ export default function MeetingDetailsPage() {
   useEffect(() => {
     const fetchMeeting = async () => {
       try {
+
         const res = await fetch(`${process.env.BASE_URL}/meetings/${id}`, {
+
           method: "GET",
           headers: {
             "Content-Type": "application/json",

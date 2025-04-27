@@ -95,8 +95,8 @@ export default function Home() {
 
       };
 
-      // Send the API request to create the meeting
       const meetingres = await fetch(`${process.env.BASE_URL}/meetings`, {
+
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -165,6 +165,7 @@ export default function Home() {
       };
 
       // Send the API request to create the meeting
+
       const res = await fetch(`${process.env.BASE_URL}/meetings`, {
         method: 'POST',
         headers: {
