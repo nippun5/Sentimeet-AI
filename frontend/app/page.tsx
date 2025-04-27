@@ -44,7 +44,7 @@ export default function Home() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.BASE_URL}/auth/signup`, {
+      const res = await fetch(`https://backend.kamalajoshi.site/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, firstname, lastname, password }),
@@ -65,7 +65,7 @@ export default function Home() {
   
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.BASE_URL}/auth/login`, {
+      const res = await fetch(`https://backend.kamalajoshi.site/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -95,7 +95,7 @@ export default function Home() {
 
       };
 
-      const meetingres = await fetch(`${process.env.BASE_URL}/meetings`, {
+      const meetingres = await fetch(`https://backend.kamalajoshi.site/meetings`, {
 
         method: 'POST',
         headers: {
@@ -166,7 +166,7 @@ export default function Home() {
 
       // Send the API request to create the meeting
 
-      const res = await fetch(`${process.env.BASE_URL}/meetings`, {
+      const res = await fetch(`https://backend.kamalajoshi.site/meetings`, {
         method: 'POST',
         headers: {
           'accept': '*/*',

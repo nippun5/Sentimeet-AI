@@ -43,7 +43,7 @@ export default function MeetingDetailsPage() {
     const fetchMeeting = async () => {
       try {
 
-        const res = await fetch(`${process.env.BASE_URL}/meetings/${id}`, {
+        const res = await fetch(`https://backend.kamalajoshi.site/meetings/${id}`, {
 
           method: "GET",
           headers: {
@@ -66,7 +66,7 @@ export default function MeetingDetailsPage() {
   useEffect(() => {
     const fetchMeetingTasks = async () => {
       try {
-        const res = await fetch(`${process.env.BASE_URL}/meetingTasks/${id}`);
+        const res = await fetch(`https://backend.kamalajoshi.site/meetingTasks/${id}`);
         const data = await res.json();
         if (Array.isArray(data)) {
           setMeetingTasks(data);

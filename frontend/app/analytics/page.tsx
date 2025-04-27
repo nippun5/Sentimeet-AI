@@ -51,11 +51,11 @@ function Analytics() {
   
 
   useEffect(() => {
-    const baseUrl = process.env.BASE_URL;
+    const baseUrl = 'https://backend.kamalajoshi.site';
     const fetchMeetings = async () => {
       try {
 
-        const res = await fetch(`${process.env.BASE_URL}/meetings`);
+        const res = await fetch(`https://backend.kamalajoshi.site/meetings`);
 
       const data = await res.json();
         const meetings: Meeting[] = data.meetings || [];

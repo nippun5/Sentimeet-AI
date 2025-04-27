@@ -400,7 +400,7 @@ export function createMicrophone(stream: MediaStream) {
             
             // Optionally, send the transcriptions to your server
             const meetingId = localStorage.getItem('meetingId');
-            await fetch(`${process.env.BASE_URL}/meetings/${meetingId}`, {
+            await fetch(`https://backend.kamalajoshi.site/meetings/${meetingId}`, {
               method: 'PUT',
               headers: {
                 accept: '*/*',
