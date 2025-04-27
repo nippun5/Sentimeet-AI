@@ -8,6 +8,8 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 interface User {
@@ -46,12 +48,15 @@ function Analytics() {
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalTasks, setTotalTasks] = useState(0);
   
+  
 
   useEffect(() => {
     const baseUrl = process.env.BASE_URL;
     const fetchMeetings = async () => {
       try {
-        const res = await fetch(`https://backend.kamalajoshi.site/meetings`);
+
+        const res = await fetch(`${process.env.BASE_URL}/meetings`);
+
       const data = await res.json();
         const meetings: Meeting[] = data.meetings || [];
         setMeetings(meetings);
