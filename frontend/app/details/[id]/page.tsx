@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import dotenv from 'dotenv';
+dotenv.config();
 
 interface Meeting {
   id: string;
@@ -40,7 +42,9 @@ export default function MeetingDetailsPage() {
   useEffect(() => {
     const fetchMeeting = async () => {
       try {
-        const res = await fetch(`https://backend.kamalajoshi.site/meetings/${id}`, {
+
+        const res = await fetch(`${process.env.BASE_URL}/meetings/${id}`, {
+
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -62,7 +66,7 @@ export default function MeetingDetailsPage() {
   useEffect(() => {
     const fetchMeetingTasks = async () => {
       try {
-        const res = await fetch(`https://backend.kamalajoshi.site/meetings/meetingTasks/${id}`);
+        const res = await fetch(`${process.env.BASE_URL}/meetingTasks/${id}`);
         const data = await res.json();
         if (Array.isArray(data)) {
           setMeetingTasks(data);
