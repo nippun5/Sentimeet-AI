@@ -396,11 +396,11 @@ export function createMicrophone(stream: MediaStream) {
         if (result.status === 'completed') {
           // Log each speaker's transcriptions to the console
           for (const utterance of result.utterances) {
-            console.log(`📃 Speaker ${utterance.speaker}: ${utterance.text}`);
+            console.log(` Speaker ${utterance.speaker}: ${utterance.text}`);
             
             // Optionally, send the transcriptions to your server
             const meetingId = localStorage.getItem('meetingId');
-            await fetch(`https://backend.kamalajoshi.site/meetings/${meetingId}`, {
+            await fetch(`${process.env.BASE_URL}/meetings/${meetingId}`, {
               method: 'PUT',
               headers: {
                 accept: '*/*',
@@ -411,7 +411,7 @@ export function createMicrophone(stream: MediaStream) {
           }
           break;
         } else if (result.status === 'error') {
-          throw new Error(`❌ Transcription failed: ${result.error}`);
+          throw new Error(` Transcription failed: ${result.error}`);
         } else {
           await new Promise((resolve) => setTimeout(resolve, 3000));
         }
