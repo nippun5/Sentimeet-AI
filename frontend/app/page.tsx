@@ -7,6 +7,7 @@ import { User } from '@stream-io/video-client';
 import CallContainer from '@/components/CallContainer';
 import ErrorScreen from '@/components/ErrorScreen';
 import { Button, Typography } from '@material-tailwind/react';
+import dotenv from 'dotenv';
 
 type HomeState = {
   apiKey: string;
@@ -16,7 +17,7 @@ type HomeState = {
   // // meetingTitle: string;
   authorization: string;
 };
-
+dotenv.config();
 type DecodedToken = {
   sub: string;
   firstname: string;
@@ -43,7 +44,7 @@ export default function Home() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:8000/auth/signup`, {
+      const res = await fetch(`${process.env.BASE_URL}/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, firstname, lastname, password }),
@@ -64,7 +65,7 @@ export default function Home() {
   
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:8000/auth/login`, {
+      const res = await fetch(`${process.env.BASE_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -95,7 +96,7 @@ export default function Home() {
       };
 
       // Send the API request to create the meeting
-      const meetingres = await fetch(`http://localhost:8000/meetings`, {
+      const meetingres = await fetch(`${process.env.BASE_URL}/meetings`, {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -164,7 +165,7 @@ export default function Home() {
       };
 
       // Send the API request to create the meeting
-      const res = await fetch(`http://localhost:8000/meetings`, {
+      const res = await fetch(`${process.env.BASE_URL}/meetings`, {
         method: 'POST',
         headers: {
           'accept': '*/*',
