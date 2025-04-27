@@ -40,7 +40,7 @@ export default function MeetingDetailsPage() {
   useEffect(() => {
     const fetchMeeting = async () => {
       try {
-        const res = await fetch(`http://backend.kamalajoshi.site:8000/meetings/${id}`, {
+        const res = await fetch(`http://localhost:8000/meetings/${id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -62,7 +62,7 @@ export default function MeetingDetailsPage() {
   useEffect(() => {
     const fetchMeetingTasks = async () => {
       try {
-        const res = await fetch(`http://backend.kamalajoshi.site:8000/meetingTasks/${id}`);
+        const res = await fetch(`http://localhost:8000/meetingTasks/${id}`);
         const data = await res.json();
         if (Array.isArray(data)) {
           setMeetingTasks(data);
