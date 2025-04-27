@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import dotenv from 'dotenv';
+dotenv.config();
 
 interface Meeting {
   id: string;
